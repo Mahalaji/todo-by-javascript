@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To do List</title>
+    <style>
+        body {
+            margin: 0;
+            min-width: 250px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: white;
+            --secondary-color: black;
+        }
+
+        .dark {
+            --primary-color: black;
+            --secondary-color: white;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul li {
+            cursor: pointer;
+            position: relative;
+            padding: 12px 8px 12px 40px;
+            list-style-type: none;
+            background: var(--primary-color);
+            font-size: 18px;
+            transition: 0.2s;
+
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        ul li:nth-child(odd) {
+            background: var(--primary-color);
+        }
+
+        ul li:hover {
+            background: var(--primary-color);
+        }
+
+        ul li.checked {
+            background: #888;
+            color: var(--primary-color);
+        }
+
+        ul li.checked::before {
+            content: '';
+            position: absolute;
+            border-color: var(--primary-color);
+            border-style: solid;
+            border-width: 0 2px 2px 0;
+            top: 10px;
+            left: 16px;
+            transform: rotate(45deg);
+            height: 15px;
+            width: 7px;
+        }
+
+        .close,
+        .edit {
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: 12px 16px 12px 16px;
+            cursor: pointer;
+        }
+
+        .close {
+            right: 50px;
+        }
+
+        .edit {
+            right: 0;
+        }
+
+        .close:hover {
+            background-color: #f44336;
+            color: var(--primary-color);
+        }
+
+        .edit:hover {
+            background-color: #4CAF50;
+            color: var(--primary-color);
+        }
+
+        .header {
+            background-color: var(--secandary-color);
+            padding: 30px 40px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .header:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        input {
+            margin-bottom: 5px;
+            border: 2px solid var(--secondary-color);
+            /* Add border */
+            border-radius: 4px;
+            /* Optional: add rounded corners */
+            width: 75%;
+            padding: 10px;
+            float: left;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            /* Smooth transition for hover effect */
+        }
+
+        input:focus {
+            border-color: var(--secandary-color);
+            /* Change border color on focus */
+            outline: none;
+            /* Remove default outline */
+        }
+
+        .addBtn,
+        .searchBtn {
+            padding: 10px;
+            width: 10%;
+            color: var(--secandary-color);
+            float: left;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            margin-left: 10px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 4px;
+        }
+
+        .addBtn:hover,
+        .searchBtn:hover {
+            background-color: #888;
+            color: white;
+            border-color: var(--secandary-color);
+            /* Change border color on hover */
+        }
+
+
+
+
+        #btn {
+            margin-left: 91%;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="myDIV" class="header">
+        <!-- <button id="btn">Dark</button> -->
+        <h2 style="margin:5px"> To Do List</h2>
+        <input type="text" id="myInput" placeholder="Title...">
+        <span onclick="newElement()" class="addBtn">Add</span>
+        <input type="text" id="searchInput" placeholder="Search...">
+        <span onclick="searchList()" class="searchBtn">Search</span>
+    </div>
+    <ul id="myUL">
+        <li>Hit the gym</li>
+        <li class="checked">Pay bills</li>
+        <li>Meet George</li>
+        <li>Buy eggs</li>
+        <li>Read a book</li>
+        <li>Organize office</li>
+    </ul>
+    <script>
+        //theme
+        // var btn = document.getElementById("btn");
+        // btn.onclick = function () {
+        //     document.body.classList.toggle("dark");
+        //     if (document.body.classList.contains("dark")) {
+        //         btn.textContent = "Light";
+        //     }
+        //     else {
+        //         btn.textContent = "Dark";
+
+        //     }
+        // };
+
+        // Tick
+        let list = document.querySelector('ul');
+        list.addEventListener('click', function (sel) {
+            if (sel.target.tagName === "LI") {
+                sel.target.classList.toggle('checked');
+            }
+        }, false);
+
+        //cose button and edit in parent
+        let Nodelist = document.getElementsByTagName("li");
+        let j;
+        for (j = 0; j < Nodelist.length; j++) {
+            let span = document.createElement("span");
+            let txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+            Nodelist[j].appendChild(span);
+
+            let editspan = document.createElement("span");
+            let edittxt = document.createTextNode("✎");
+            editspan.className = "edit";
+            editspan.appendChild(edittxt);
+            Nodelist[j].appendChild(editspan);
+
+
+        }
+        //edit
+        let edits = document.getElementsByClassName("edit");
+        for (let i = 0; i < edits.length; i++) {
+            edits[i].onclick = function () {
+                let currentText = this.parentElement.firstChild.nodeValue.trim();
+                let newText = prompt("Edit the item:", currentText);
+                if (newText) {
+                    this.parentElement.firstChild.nodeValue = newText;
+                }
+            };
+        }
+        //close
+        let close = document.getElementsByClassName("close");
+        let i;
+
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function () {
+                var div = this.parentElement;
+                div.style.display = "none";
+            }
+        }
+        //append
+        function newElement() {
+            let li = document.createElement("li");
+            let inputvalue = document.getElementById("myInput").value;
+            let t = document.createTextNode(inputvalue);
+            li.appendChild(t);
+
+            if (inputvalue === '') {
+                alert('enter something');
+            }
+            else {
+                document.getElementById("myUL").appendChild(li);
+            }
+            document.getElementById("myInput").value = '';
+            //close button
+            let span = document.createElement("span");
+            let txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+            li.appendChild(span);
+            //edit button
+            let editspan = document.createElement("span");
+            let edittxt = document.createTextNode("✎");
+            editspan.className = "edit";
+            editspan.appendChild(edittxt);
+            Nodelist[j].appendChild(editspan);
+            //edit
+            editspan.onclick = function () {
+                let currentText = this.parentElement.firstChild.nodeValue.trim();
+                let newText = prompt("Edit the item:", currentText);
+                if (newText) {
+                    this.parentElement.firstChild.nodeValue = newText;
+                }
+            };
+            //close
+            for (i = 0; i < close.length; i++) {
+                close[i].onclick = function () {
+                    var div = this.parentElement;
+                    div.style.display = "none";
+                }
+            }
+
+        }
+        //search 
+        function searchList() {
+            let searchInput = document.getElementById("searchInput").value.toLowerCase();
+            let items = document.querySelectorAll("ul li");
+
+            items.forEach(function (item) {
+                let text = item.textContent || item.innerText;
+                if (text.toLowerCase().includes(searchInput)) {
+                    item.style.display = "";
+                } else {
+                    item.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
