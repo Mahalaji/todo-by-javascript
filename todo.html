@@ -5,10 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To do List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             margin: 0;
             min-width: 250px;
+            background: var(--primary-color);
         }
 
         * {
@@ -155,7 +157,9 @@
             /* Change border color on hover */
         }
 
-
+        li {
+            color: var(--secondary-color);
+        }
 
 
         #btn {
@@ -169,7 +173,8 @@
 <body>
 
     <div id="myDIV" class="header">
-        <!-- <button id="btn">Dark</button> -->
+        <span id="btn"><i id="icon" class="fa-solid fa-moon" style="font-size: 30px;"></i></span>
+        <!-- <button id="btn"><i class="fa-solid fa-moon"></i></button> -->
         <h2 style="margin:5px"> To Do List</h2>
         <input type="text" id="myInput" placeholder="Title...">
         <span onclick="newElement()" class="addBtn">Add</span>
@@ -186,17 +191,16 @@
     </ul>
     <script>
         //theme
-        // var btn = document.getElementById("btn");
-        // btn.onclick = function () {
-        //     document.body.classList.toggle("dark");
-        //     if (document.body.classList.contains("dark")) {
-        //         btn.textContent = "Light";
-        //     }
-        //     else {
-        //         btn.textContent = "Dark";
-
-        //     }
-        // };
+        var btn = document.getElementById("btn");
+        var icon = document.getElementById("icon");
+        btn.onclick = function () {
+            document.body.classList.toggle("dark");
+            if (icon.classList.contains('fa-moon')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        };
 
         // Tick
         let list = document.querySelector('ul');
@@ -270,7 +274,7 @@
             let edittxt = document.createTextNode("✎");
             editspan.className = "edit";
             editspan.appendChild(edittxt);
-            Nodelist[j].appendChild(editspan);
+            li.appendChild(editspan);
             //edit
             editspan.onclick = function () {
                 let currentText = this.parentElement.firstChild.nodeValue.trim();
